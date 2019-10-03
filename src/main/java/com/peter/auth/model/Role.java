@@ -1,16 +1,14 @@
 package com.peter.auth.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "rrole")
 public class Role {
     @Id
@@ -20,7 +18,7 @@ public class Role {
 
     private String name;
 
-    @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
     @JsonIgnoreProperties("roles")
     private Set<User> users;

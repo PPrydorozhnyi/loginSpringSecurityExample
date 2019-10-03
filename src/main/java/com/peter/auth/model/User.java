@@ -1,16 +1,14 @@
 package com.peter.auth.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "uuser")
 public class User {
     @Id
@@ -25,7 +23,7 @@ public class User {
     @Transient
     private String passwordConfirm;
 
-    @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @ManyToMany
     @JoinTable(
             name = "uuser_rrole",
