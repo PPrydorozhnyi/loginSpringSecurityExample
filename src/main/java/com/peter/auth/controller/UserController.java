@@ -58,6 +58,11 @@ public class UserController {
         return "login";
     }
 
+    @GetMapping("/adminPage")
+    public String admin(Model model) {
+        return "admin";
+    }
+
     @GetMapping({"/", "/welcome"})
     public String welcome(Model model) {
         return "welcome";

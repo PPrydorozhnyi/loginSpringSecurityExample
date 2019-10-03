@@ -16,8 +16,7 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
-        <h4 class="text-center"><a href="${contextPath}/adminPage">Click if You are admin</a></h4>
+        <h2>Welcome dear Admin ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
     </c:if>
   </div>
   <script src="${contextPath}/resources/js/jquery.min.js"></script>
