@@ -3,7 +3,7 @@ databaseChangeLog:
       name: init_schema.ver
       value: 1
   - changeSet:
-      id: init_schema_{db.version}.${init_schema.ver}
+      id: init_schema_${db.version}.${init_schema.ver}
       author: auth
       validCheckSum: ANY
       changes:

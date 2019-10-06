@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: clear_schema_{db.version}
+      id: clear_schema_${db.version}
       author: auth
       validCheckSum: ANY
       changes:
