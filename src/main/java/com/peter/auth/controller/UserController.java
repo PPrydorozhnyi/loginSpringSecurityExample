@@ -1,16 +1,23 @@
 package com.peter.auth.controller;
 
+import com.peter.auth.facades.RecaptchaFacade;
 import com.peter.auth.model.User;
 import com.peter.auth.service.SecurityService;
 import com.peter.auth.service.UserService;
 import com.peter.auth.validator.UserValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
     private final UserService userService;
 
@@ -18,12 +25,9 @@ public class UserController {
 
     private final UserValidator userValidator;
 
-    @Autowired
-    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator) {
-        this.userService = userService;
-        this.securityService = securityService;
-        this.userValidator = userValidator;
-    }
+    private final RecaptchaFacade recaptchaFacade;
+
+    private static final String CAPTCHA_PARAMETER = "g-recaptcha-response";
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -33,10 +37,15 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult,
+                               HttpServletRequest request, Model model) {
+
+        String parameter = request.getParameter(CAPTCHA_PARAMETER);
+        recaptchaFacade.validateCaptcha(request, parameter, bindingResult);
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("captcha", "Please complete captcha");
             return "registration";
         }
 

@@ -33,4 +33,7 @@ public class User {
     @JsonIgnoreProperties("users")
     private Set<Role> roles;
 
+    @Transient
+    private String recaptcha;
+
 }

@@ -10,7 +10,3 @@ databaseChangeLog:
         - sqlFile:
             path: sql/init_schema.sql
             relativeToChangelogFile: true
-      rollback:
-        - delete:
-            tableName: uuser
-            where: username in ('admin', 'guest')
