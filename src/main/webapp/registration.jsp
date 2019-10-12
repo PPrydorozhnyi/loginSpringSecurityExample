@@ -49,7 +49,7 @@
                      data-sitekey="6LdHFL0UAAAAALI4Y-sC6_xK2gb2o2LmShMI4uCM">
                 </div>
                 <c:if test="${captcha != null}">
-                    <p class="has-error">${captcha}</p>
+                    <p class="has-error">${captcha}</p>x
                 </c:if>
                     <form:errors path="recaptcha"/>
             </div>
