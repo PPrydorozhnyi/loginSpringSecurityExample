@@ -23,6 +23,8 @@ public class User {
     @Transient
     private String passwordConfirm;
 
+    private String email;
+
     @EqualsAndHashCode.Exclude
     @ManyToMany
     @JoinTable(

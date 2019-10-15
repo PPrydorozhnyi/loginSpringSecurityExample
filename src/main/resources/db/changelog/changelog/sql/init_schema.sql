@@ -1,7 +1,8 @@
 CREATE TABLE uuser (
   user_id SERIAL PRIMARY KEY,
   username VARCHAR(100),
-  password VARCHAR(100)
+  password VARCHAR(100),
+  email VARCHAR(100)
 );
 
 CREATE TABLE rrole (
