@@ -35,7 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**", "/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
-//                .addFilterAfter(recaptchaFilter, UsernamePasswordAuthenticationFilter.class)
             .formLogin()
                 .loginPage("/login")
                 .permitAll()

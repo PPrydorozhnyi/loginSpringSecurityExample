@@ -30,10 +30,6 @@
             <span>${error}</span>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-            <div class="g-recaptcha"
-                 data-sitekey="6LdHFL0UAAAAALI4Y-sC6_xK2gb2o2LmShMI4uCM">
-            </div>
-
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
             <h4 class="text-center"><a href="${contextPath}/registration">Create an account</a></h4>
         </div>

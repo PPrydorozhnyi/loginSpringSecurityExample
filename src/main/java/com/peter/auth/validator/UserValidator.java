@@ -2,6 +2,7 @@ package com.peter.auth.validator;
 
 import com.peter.auth.model.User;
 import com.peter.auth.service.UserService;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -32,6 +33,10 @@ public class UserValidator implements Validator {
         }
         if (userService.findByUsername(user.getUsername()) != null) {
             errors.rejectValue("username", "Duplicate.userForm.username");
+        }
+
+        if(!EmailValidator.getInstance().isValid(user.getEmail())){
+            errors.rejectValue("email", "email.error");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
