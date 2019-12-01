@@ -6,7 +6,11 @@ import com.peter.auth.service.SecurityService;
 import com.peter.auth.service.UserService;
 import com.peter.auth.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ResolvableType;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,19 +19,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
-    private final UserService userService;
-
-    private final SecurityService securityService;
-
-    private final UserValidator userValidator;
-
-    private final RecaptchaFacade recaptchaFacade;
-
+    private static final String AUTHORIZATION_REQUEST_BASE_URI
+            = "oauth2/authorization";
     private static final String CAPTCHA_PARAMETER = "g-recaptcha-response";
+
+    private final ClientRegistrationRepository clientRegistrationRepository;
+    private final UserService userService;
+    private final SecurityService securityService;
+    private final UserValidator userValidator;
+    private final RecaptchaFacade recaptchaFacade;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -64,7 +70,28 @@ public class UserController {
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
 
+        getLoginPageWithOAuth2(model);
+
         return "login";
+    }
+
+    private String getLoginPageWithOAuth2(Model model) {
+        Map<String, String> oauth2AuthenticationUrls = new HashMap<>();
+
+        Iterable<ClientRegistration> clientRegistrations = IteratorUtils::emptyIterator;
+        ResolvableType type = ResolvableType.forInstance(clientRegistrationRepository)
+                .as(Iterable.class);
+        if (type != ResolvableType.NONE &&
+                ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
+            clientRegistrations = (Iterable<ClientRegistration>) clientRegistrationRepository;
+        }
+
+        clientRegistrations.forEach(registration ->
+                oauth2AuthenticationUrls.put(registration.getClientName(),
+                        AUTHORIZATION_REQUEST_BASE_URI + "/" + registration.getRegistrationId()));
+        model.addAttribute("urls", oauth2AuthenticationUrls);
+
+        return "oauth_login";
     }
 
     @GetMapping("/adminPage")

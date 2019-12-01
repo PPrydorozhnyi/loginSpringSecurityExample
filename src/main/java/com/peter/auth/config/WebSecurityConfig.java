@@ -1,4 +1,4 @@
-package com.peter.auth;
+package com.peter.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,26 +29,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//            .authorizeRequests()
-//                .antMatchers("/adminPage").hasAuthority("admin")
-//                .antMatchers("/resources/**", "/registration").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//            .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//            .logout()
-//                .permitAll();
-        http.authorizeRequests()
-                .antMatchers("/oauth_login")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+        http
+                .authorizeRequests()
+                    .antMatchers("/resources/**", "/registration", "/oauth_login")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
                 .oauth2Login()
-                .loginPage("/oauth_login");
+                    .loginPage("/login")
+                    .permitAll()
+                    .and()
+                    .logout()
+                    .permitAll();
     }
 
     @Bean
