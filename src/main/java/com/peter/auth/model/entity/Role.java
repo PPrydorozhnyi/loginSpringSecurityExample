@@ -1,4 +1,4 @@
-package com.peter.auth.model;
+package com.peter.auth.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

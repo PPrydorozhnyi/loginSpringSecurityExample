@@ -1,7 +1,7 @@
 package com.peter.auth.service;
 
-import com.peter.auth.model.Role;
-import com.peter.auth.model.User;
+import com.peter.auth.model.entity.Role;
+import com.peter.auth.model.entity.User;
 import com.peter.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

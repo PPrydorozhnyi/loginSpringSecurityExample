@@ -1,6 +1,5 @@
-package com.peter.auth.model;
+package com.peter.auth.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,9 +19,6 @@ public class User {
 
     private String password;
 
-    @Transient
-    private String passwordConfirm;
-
     private String email;
 
     @EqualsAndHashCode.Exclude
@@ -32,10 +28,5 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
-    @JsonIgnoreProperties("users")
     private Set<Role> roles;
-
-    @Transient
-    private String recaptcha;
-
 }

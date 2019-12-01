@@ -1,12 +1,14 @@
 package com.peter.auth.controller;
 
 import com.peter.auth.facades.RecaptchaFacade;
-import com.peter.auth.model.User;
+import com.peter.auth.model.dto.UserDTO;
+import com.peter.auth.model.entity.User;
 import com.peter.auth.service.SecurityService;
 import com.peter.auth.service.UserService;
 import com.peter.auth.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.IteratorUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -34,16 +36,17 @@ public class UserController {
     private final SecurityService securityService;
     private final UserValidator userValidator;
     private final RecaptchaFacade recaptchaFacade;
+    private final ModelMapper mapper;
 
     @GetMapping("/registration")
     public String registration(Model model) {
-        model.addAttribute("userForm", new User());
+        model.addAttribute("userForm", new UserDTO());
 
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult,
+    public String registration(@ModelAttribute("userForm") UserDTO userForm, BindingResult bindingResult,
                                HttpServletRequest request, Model model) {
 
         String parameter = request.getParameter(CAPTCHA_PARAMETER);
@@ -55,7 +58,7 @@ public class UserController {
             return "registration";
         }
 
-        userService.save(userForm);
+        userService.save(mapper.map(userForm, User.class));
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 

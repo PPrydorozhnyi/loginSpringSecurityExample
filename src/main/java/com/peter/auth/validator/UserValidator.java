@@ -1,6 +1,6 @@
 package com.peter.auth.validator;
 
-import com.peter.auth.model.User;
+import com.peter.auth.model.dto.UserDTO;
 import com.peter.auth.service.UserService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ public class UserValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return User.class.equals(aClass);
+        return UserDTO.class.equals(aClass);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
-        User user = (User) o;
+        UserDTO user = (UserDTO) o;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
         if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
@@ -35,7 +35,7 @@ public class UserValidator implements Validator {
             errors.rejectValue("username", "Duplicate.userForm.username");
         }
 
-        if(!EmailValidator.getInstance().isValid(user.getEmail())){
+        if (!EmailValidator.getInstance().isValid(user.getEmail())) {
             errors.rejectValue("email", "email.error");
         }
 
