@@ -13,7 +13,7 @@
     <body>
     <div class="container">
         <h1>Opps...</h1>
-        <p>Seems like you are not admin</p>
+        Exception is: <%= exception %>
 
         <h4 class="text-center"><a href="${contextPath}/welcome">Go to home</a></h4>
     </div>

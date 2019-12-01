@@ -11,6 +11,7 @@ import org.apache.commons.collections4.IteratorUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Controller;
@@ -103,7 +104,9 @@ public class UserController {
     }
 
     @GetMapping({"/", "/welcome"})
-    public String welcome(Model model) {
+    public String welcome(Model model, OAuth2AuthenticationToken authentication) {
+        model.addAttribute("username", authentication.getPrincipal()
+                .getAttributes().getOrDefault("name", "User"));
         return "welcome";
     }
 }
